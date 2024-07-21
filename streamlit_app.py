@@ -1,17 +1,9 @@
-from decouple import config
-from langchain_google_genai import ChatGoogleGenerativeAI
+import streamlit as st
+import numpy as np
+import pandas as pd
 
-GOOGLE_GEMINI_KEY = config("GOOGLE_GEMINI_KEY")
+map_data = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+    columns=['lat', 'lon'])
 
-# llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_GEMINI_KEY)
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", google_api_key=GOOGLE_GEMINI_KEY)
-
-print("Q & A With AI")
-print("=============")
-
-question = "What's the currency of Thailand?"
-print("Question: " + question)
-
-response = llm.invoke(question)
-
-print("Answer: " + response.content)
+st.map(map_data)
