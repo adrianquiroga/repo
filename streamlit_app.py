@@ -1,21 +1,17 @@
-import yfinance as yf
-import streamlit as st
+from decouple import config
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-st.write("""
-# Simple Stock Price App
+GOOGLE_GEMINI_KEY = config("GOOGLE_GEMINI_KEY")
 
-Shown are the stock closing price and volume of Google!
+# llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_GEMINI_KEY)
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", google_api_key=GOOGLE_GEMINI_KEY)
 
-""")
+print("Q & A With AI")
+print("=============")
 
-# https://towardsdatascience.com/how-to-get-stock-data-using-python-c0de1df17e75
-#define the ticker symbol
-tickerSymbol = 'GOOGL'
-#get data on this ticker
-tickerData = yf.Ticker(tickerSymbol)
-#get the historical prices for this ticker
-tickerDf = tickerData.history(period='1d', start='2024-01-01', end='2024-07-21')
-# Open	High	Low	Close	Volume	Dividends	Stock Splits
+question = "What's the currency of Thailand?"
+print("Question: " + question)
 
-st.line_chart(tickerDf.Close)
-st.line_chart(tickerDf.Volume)
+response = llm.invoke(question)
+
+print("Answer: " + response.content)
